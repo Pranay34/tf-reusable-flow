@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: echo "$SECRETS_CONTEXT"
         env:
-          SECRETS_CONTEXT: ${{ github.event.inputs.secrets-context }}
+          SECRETS_CONTEXT: ${{ github.event.inputs.secrets-context || toJson(secrets) }}
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
