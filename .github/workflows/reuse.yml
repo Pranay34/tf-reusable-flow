@@ -9,6 +9,10 @@ on:
         description: Directory in which to run Terraform commands and operations
         type: string
         default: ./
+      SECRETS_CONTEXT:
+        description: JSON string containing the secrets context
+        type: string
+        required: true  
 
 jobs:
   terraform:
