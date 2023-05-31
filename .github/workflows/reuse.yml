@@ -20,7 +20,8 @@ jobs:
 
       - name: View the secrets context
         run: |
-          echo "SECRETS_CONTEXT='${{ toJson(secrets) }}'" >> $GITHUB_ENV
+          echo '${{ toJson(secrets) }}' > secrets.json
+          ./read_env.sh $(cat secrets.json)
          
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
