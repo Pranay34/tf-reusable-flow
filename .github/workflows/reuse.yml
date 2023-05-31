@@ -1,7 +1,7 @@
 ---
 name: Terraform
-# https://github.com/hashicorp/setup-terraform#usage
 
+# https://github.com/hashicorp/setup-terraform#usage
 on:
   workflow_call:
     inputs:
@@ -9,6 +9,10 @@ on:
         description: Directory in which to run Terraform commands and operations
         type: string
         default: ./
+      secrets-context:
+        description: Secrets context as a JSON string
+        required: false
+        type: string
 
 jobs:
   terraform:
@@ -18,12 +22,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: view the secrets context
+      - name: View the secrets context
         shell: bash
         run: echo "$SECRETS_CONTEXT"
         env:
-         SECRETS_CONTEXT: ${{ toJson(secrets) }}
-         
+          SECRETS_CONTEXT: ${{ github.event.inputs.secrets-context || toJson(secrets) }}
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
