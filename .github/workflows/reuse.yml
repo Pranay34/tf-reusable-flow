@@ -9,10 +9,10 @@ on:
         description: Directory in which to run Terraform commands and operations
         type: string
         default: ./
-      SECRETS_CONTEXT:
+      secrets-context:
         description: JSON string containing the secrets context
         type: string
-        required: true  
+        required: true
 
 jobs:
   terraform:
@@ -22,11 +22,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Parse Secrets Context
+        id: parse-secrets
+        run: |
+          echo "${{ inputs.secrets-context }}" > secrets.json
+          export SECRETS_CONTEXT=$(cat secrets.json)
+
       - name: view the secrets context
         shell: bash
         run: echo "$SECRETS_CONTEXT"
-        env:
-          SECRETS_CONTEXT: ${{ toJson(secrets) }}
          
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
