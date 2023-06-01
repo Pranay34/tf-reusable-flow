@@ -18,18 +18,18 @@ jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
-    outputs:
-      secrets-context: ${{ steps.view-secrets-context.outputs.secrets-context }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: View the secrets context
-        id: view-secrets-context
         shell: bash
         run: echo "$SECRETS_CONTEXT"
         env:
           SECRETS_CONTEXT: ${{ github.event.inputs.secrets-context || toJson(secrets) }}
+
+      - name: Set secrets context as environment variable
+        run: echo "SECRETS_CONTEXT=${{ steps.view-secrets-context.outputs.secrets-context }}" >> $GITHUB_ENV
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
