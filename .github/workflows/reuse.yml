@@ -9,17 +9,15 @@ on:
         description: Directory in which to run Terraform commands and operations
         type: string
         default: ./
-      secrets-context:
+      SECRETS_CONTEXT:
         description: Secrets context as a JSON string
-        required: false
+        required: true
         type: string
 
 jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
-    outputs:
-      secrets-context: ${{ steps.view-secrets-context.outputs.secrets-context }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
