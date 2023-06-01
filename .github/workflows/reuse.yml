@@ -19,14 +19,17 @@ jobs:
     name: Terraform
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.step1.outputs.secrets-context }}
+      secrets-context: ${{ steps.view-secrets-context.outputs.secrets-context }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - id: step1
+      - name: View the secrets context
+        id: view-secrets-context
         shell: bash
-        run: echo "$SECRETS_CONTEXT"
+        run: |
+          echo "$SECRETS_CONTEXT"
+          echo "::set-output name=secrets-context::$SECRETS_CONTEXT"
         env:
           SECRETS_CONTEXT: ${{ github.event.inputs.secrets-context || toJson(secrets) }}
 
