@@ -1,11 +1,18 @@
+---
 name: Terraform
 
 # https://github.com/hashicorp/setup-terraform#usage
 on:
-  workflow_run:
-    workflows: [Integration]
-    types:
-      - completed
+  workflow_call:
+    inputs:
+      working-directory:
+        description: Directory in which to run Terraform commands and operations
+        type: string
+        default: ./
+      secrets-context:
+        description: Secrets context as a JSON string
+        required: false
+        type: string
 
 jobs:
   terraform:
@@ -19,7 +26,7 @@ jobs:
         shell: bash
         run: echo "$SECRETS_CONTEXT"
         env:
-          SECRETS_CONTEXT: ${{ github.event.workflow_run.inputs.secrets-context || toJson(secrets) }}
+          SECRETS_CONTEXT: ${{ github.event.inputs.secrets-context || toJson(secrets) }}
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
