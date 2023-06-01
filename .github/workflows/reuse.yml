@@ -9,10 +9,6 @@ on:
         description: Directory in which to run Terraform commands and operations
         type: string
         default: ./
-      SECRETS_CONTEXT:
-        description: Secrets context as a JSON string
-        required: true
-        type: string
 
 jobs:
   terraform:
@@ -46,6 +42,3 @@ jobs:
         run: terraform validate
         continue-on-error: true
 
-      - name: Terraform Plan
-        run: terraform plan 
-        continue-on-error: true
