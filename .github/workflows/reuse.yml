@@ -25,6 +25,12 @@ jobs:
         run: echo "$SECRETS_CONTEXT"
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
+
+      - name: Checking secrets
+        uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
