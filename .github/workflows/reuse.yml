@@ -18,19 +18,17 @@ jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
+    outputs:
+      secrets-context: ${{ steps.view-secrets-context.outputs.secrets-context }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: View the secrets context
-        id: view-secrets-context
         shell: bash
-        run: |
-          echo "$SECRETS_CONTEXT"
-          echo "::set-output name=secrets-context::$SECRETS_CONTEXT"
+        run: echo "$SECRETS_CONTEXT"
         env:
-          SECRETS_CONTEXT: ${{ github.event.inputs.secrets-context || toJson(secrets) }}
-
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -46,4 +44,8 @@ jobs:
 
       - name: Terraform Validate
         run: terraform validate
+        continue-on-error: true
+
+      - name: Terraform Plan
+        run: terraform plan 
         continue-on-error: true
