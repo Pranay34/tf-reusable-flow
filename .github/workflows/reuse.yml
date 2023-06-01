@@ -46,7 +46,3 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
         continue-on-error: true
-
-      - name: Terraform Plan
-        run: terraform plan 
-        continue-on-error: true
